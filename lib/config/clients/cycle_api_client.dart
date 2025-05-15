@@ -12,14 +12,11 @@ abstract class CycleApiClient {
   Dio createInstance(Env env) {
     final headers = {
       'X-RapidAPI-Key': env.cyclePhaseApiKey,
-      'X-RapidAPI-Host': env.cyclePhaseApiUrl.replaceFirst('https://', ''),
+      'X-RapidAPI-Host': env.cyclePhaseApiUrl,
     };
 
     final dio = Dio(
-      BaseOptions(
-        baseUrl: env.cyclePhaseApiUrl,
-        headers: headers,
-      ),
+      BaseOptions(baseUrl: env.cyclePhaseApiUrl, headers: headers),
     );
 
     if (kDebugMode) {
