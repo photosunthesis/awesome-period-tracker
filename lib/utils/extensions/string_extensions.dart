@@ -31,11 +31,10 @@ extension StringExtensions on String {
       EmojiParser().unemojify(this).replaceAll(RegExp(r':\w+:'), '');
 
   String toTitleCase() {
-    return split(' ').map((word) => word.capitalize()).join(' ').splitMapJoin(
-          ' i ',
-          onMatch: (m) => ' I ',
-          onNonMatch: (m) => m,
-        );
+    return split(' ')
+        .map((word) => word.capitalize())
+        .join(' ')
+        .splitMapJoin(' i ', onMatch: (m) => ' I ', onNonMatch: (m) => m);
   }
 
   String removeDoubleSpaces() => replaceAll(RegExp(r'\s{2,}'), ' ');

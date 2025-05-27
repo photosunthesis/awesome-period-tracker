@@ -86,43 +86,46 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildBackToTodayButton() {
     return BlocBuilder<HomeCubit, HomeState>(
-      builder: (context, state) => AnimatedSwitcher(
-        duration: const Duration(milliseconds: 450),
-        child: state.selectedDate.isToday
-            ? const SizedBox.shrink()
-            : TextButton(
-                onPressed: _cubit.initialize,
-                style: TextButton.styleFrom(
-                  padding: const EdgeInsets.only(top: 12),
-                ),
-                child: Text(
-                  context.l10n.today,
-                  style: context.primaryTextTheme.titleSmall?.copyWith(
-                    color: context.colorScheme.onSurface.withAlpha(170),
-                  ),
-                ),
-              ),
-      ),
+      builder:
+          (context, state) => AnimatedSwitcher(
+            duration: const Duration(milliseconds: 450),
+            child:
+                state.selectedDate.isToday
+                    ? const SizedBox.shrink()
+                    : TextButton(
+                      onPressed: _cubit.initialize,
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.only(top: 12),
+                      ),
+                      child: Text(
+                        context.l10n.today,
+                        style: context.primaryTextTheme.titleSmall?.copyWith(
+                          color: context.colorScheme.onSurface.withAlpha(170),
+                        ),
+                      ),
+                    ),
+          ),
     );
   }
 
   Widget _buildThemeModeSwitcher() {
     return BlocBuilder<ThemeModeCubit, ThemeMode>(
-      builder: (context, state) => AnimatedSwitcher(
-        duration: const Duration(milliseconds: 450),
-        child: Padding(
-          padding: const EdgeInsets.only(top: 4),
-          child: IconButton(
-            icon: Icon(
-              state == ThemeMode.dark
-                  ? Icons.brightness_7_rounded
-                  : Icons.brightness_4_rounded,
-              color: context.colorScheme.onSurface.withAlpha(153),
+      builder:
+          (context, state) => AnimatedSwitcher(
+            duration: const Duration(milliseconds: 450),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: IconButton(
+                icon: Icon(
+                  state == ThemeMode.dark
+                      ? Icons.brightness_7_rounded
+                      : Icons.brightness_4_rounded,
+                  color: context.colorScheme.onSurface.withAlpha(153),
+                ),
+                onPressed: GetIt.I<ThemeModeCubit>().toggleTheme,
+              ),
             ),
-            onPressed: GetIt.I<ThemeModeCubit>().toggleTheme,
           ),
-        ),
-      ),
     );
   }
 
@@ -135,11 +138,12 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: const EdgeInsets.fromLTRB(8, 12, 8, 0),
             child: AppCard(
               child: BlocBuilder<HomeCubit, HomeState>(
-                builder: (context, state) => Calendar(
-                  onDaySelected: (date, _) => _cubit.initialize(date: date),
-                  selectedDate: state.selectedDate,
-                  cycleEvents: state.forecast?.events ?? [],
-                ),
+                builder:
+                    (context, state) => Calendar(
+                      onDaySelected: (date, _) => _cubit.initialize(date: date),
+                      selectedDate: state.selectedDate,
+                      cycleEvents: state.forecast?.events ?? [],
+                    ),
               ),
             ),
           ),

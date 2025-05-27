@@ -26,13 +26,15 @@ class SymptomsSection extends StatelessWidget {
             hoverColor: Colors.transparent,
             highlightColor: Colors.transparent,
             onTap: () async {
-              final shouldRefreshHome = await LogCycleEventBottomSheet
-                  .showCycleEventTypeBottomSheet<bool?>(
-                context,
-                step: LogEventStep.symptoms,
-                date: state.selectedDate,
-                cycleEventsForDate: state.forecast?.eventsForDate ?? [],
-              );
+              final shouldRefreshHome =
+                  await LogCycleEventBottomSheet.showCycleEventTypeBottomSheet<
+                    bool?
+                  >(
+                    context,
+                    step: LogEventStep.symptoms,
+                    date: state.selectedDate,
+                    cycleEventsForDate: state.forecast?.eventsForDate ?? [],
+                  );
 
               if (shouldRefreshHome == true) {
                 context.read<HomeCubit>().initialize(date: state.selectedDate);
@@ -99,17 +101,19 @@ class SymptomsSection extends StatelessWidget {
     List<CycleEvent> events,
     List<String> symptoms,
   ) {
-    final symptomsEvent =
-        events.firstWhereOrNull((e) => e.type == CycleEventType.symptoms);
+    final symptomsEvent = events.firstWhereOrNull(
+      (e) => e.type == CycleEventType.symptoms,
+    );
 
     if (symptomsEvent == null) return _buildNoSymptomsPlaceholder(context);
 
     // Filter symptoms list to only include valid symptoms from the symptoms parameter
-    final validSymptoms = symptomsEvent.additionalData!
-        .split(Strings.symptomSeparator)
-        .map((e) => e.toTitleCase())
-        .where((symptom) => symptoms.contains(symptom))
-        .toList();
+    final validSymptoms =
+        symptomsEvent.additionalData!
+            .split(Strings.symptomSeparator)
+            .map((e) => e.toTitleCase())
+            .where((symptom) => symptoms.contains(symptom))
+            .toList();
 
     return _buildChips(context, validSymptoms);
   }

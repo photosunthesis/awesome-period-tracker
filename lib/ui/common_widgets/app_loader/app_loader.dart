@@ -3,11 +3,7 @@ import 'package:flutter/material.dart';
 
 /// Displays a loading indicator with three dots that move up and down.
 class AppLoader extends StatefulWidget {
-  const AppLoader({
-    super.key,
-    this.size = 60.0,
-    this.color = AppColors.pink,
-  });
+  const AppLoader({super.key, this.size = 60.0, this.color = AppColors.pink});
 
   final double size;
   final Color color;
@@ -33,30 +29,20 @@ class _AppLoaderState extends State<AppLoader>
     required Offset begin,
     required Offset end,
     required Interval interval,
-  }) =>
-      Transform.translate(
-        offset: Tween<Offset>(begin: begin, end: end)
-            .animate(
-              CurvedAnimation(
-                parent: _controller,
-                curve: interval,
-              ),
-            )
-            .value,
-        child: Container(
-          width: widget.size / 5,
-          height: widget.size / 5,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: widget.color,
-          ),
-        ),
-      );
+  }) => Transform.translate(
+    offset:
+        Tween<Offset>(
+          begin: begin,
+          end: end,
+        ).animate(CurvedAnimation(parent: _controller, curve: interval)).value,
+    child: Container(
+      width: widget.size / 5,
+      height: widget.size / 5,
+      decoration: BoxDecoration(shape: BoxShape.circle, color: widget.color),
+    ),
+  );
 
-  Widget _buildBottomDot({
-    required double begin,
-    required double end,
-  }) {
+  Widget _buildBottomDot({required double begin, required double end}) {
     final double offset = -widget.size / 8;
     return _buildDot(
       begin: Offset.zero,
@@ -65,10 +51,7 @@ class _AppLoaderState extends State<AppLoader>
     );
   }
 
-  Widget _buildTopDot({
-    required double begin,
-    required double end,
-  }) {
+  Widget _buildTopDot({required double begin, required double end}) {
     final double offset = -widget.size / 8;
     return _buildDot(
       begin: Offset(0.0, offset),
@@ -82,29 +65,30 @@ class _AppLoaderState extends State<AppLoader>
     final double size = widget.size;
     return AnimatedBuilder(
       animation: _controller,
-      builder: (_, __) => SizedBox(
-        width: size,
-        height: size,
-        child: Stack(
-          alignment: Alignment.center,
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      builder:
+          (_, __) => SizedBox(
+            width: size,
+            height: size,
+            child: Stack(
+              alignment: Alignment.center,
               children: <Widget>[
-                _controller.value <= 0.50
-                    ? _buildBottomDot(begin: 0.12, end: 0.50)
-                    : _buildTopDot(begin: 0.62, end: 1.0),
-                _controller.value <= 0.44
-                    ? _buildBottomDot(begin: 0.06, end: 0.44)
-                    : _buildTopDot(begin: 0.56, end: 0.94),
-                _controller.value <= 0.38
-                    ? _buildBottomDot(begin: 0.0, end: 0.38)
-                    : _buildTopDot(begin: 0.50, end: 0.88),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    _controller.value <= 0.50
+                        ? _buildBottomDot(begin: 0.12, end: 0.50)
+                        : _buildTopDot(begin: 0.62, end: 1.0),
+                    _controller.value <= 0.44
+                        ? _buildBottomDot(begin: 0.06, end: 0.44)
+                        : _buildTopDot(begin: 0.56, end: 0.94),
+                    _controller.value <= 0.38
+                        ? _buildBottomDot(begin: 0.0, end: 0.38)
+                        : _buildTopDot(begin: 0.50, end: 0.88),
+                  ],
+                ),
               ],
             ),
-          ],
-        ),
-      ),
+          ),
     );
   }
 

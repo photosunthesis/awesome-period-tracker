@@ -5,11 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 @singleton
 class AuthRepository {
-  const AuthRepository(
-    this._firebaseAuth,
-    this._localStorage,
-    this._env,
-  );
+  const AuthRepository(this._firebaseAuth, this._localStorage, this._env);
 
   final FirebaseAuth _firebaseAuth;
   final SharedPreferencesAsync _localStorage;

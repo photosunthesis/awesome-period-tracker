@@ -26,10 +26,7 @@ class HomeCubit extends Cubit<HomeState> {
   final AiInsightsService _insightsService;
   final SymptomsRepository _symptomsRepository;
 
-  Future<void> initialize({
-    DateTime? date,
-    bool useCache = true,
-  }) async {
+  Future<void> initialize({DateTime? date, bool useCache = true}) async {
     try {
       date ??= DateTime.now().withoutTime();
 
@@ -39,8 +36,10 @@ class HomeCubit extends Cubit<HomeState> {
 
       final symptoms = await _symptomsRepository.get();
 
-      final forecast =
-          await _forecastService.createForecastForDateFromEvents(date, events);
+      final forecast = await _forecastService.createForecastForDateFromEvents(
+        date,
+        events,
+      );
 
       final insight = await _insightsService.getInsightForForecast(
         forecast,

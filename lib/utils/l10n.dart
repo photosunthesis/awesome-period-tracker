@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 ///
 /// Uses the [GoRouter] instance to get the current [BuildContext] and
 /// extracts the [AppLocalizations] instance.
-final l10n = AppLocalizations.of(
-  GetIt.I<GoRouter>().routerDelegate.navigatorKey.currentState!.context,
-)!;
+final l10n =
+    AppLocalizations.of(
+      GetIt.I<GoRouter>().routerDelegate.navigatorKey.currentState!.context,
+    )!;

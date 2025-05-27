@@ -41,16 +41,19 @@ class InfoCards extends StatelessWidget {
                     _buildCard(
                       context,
                       isLoading: state.isLoading,
-                      backgroundColor:
-                          context.colorScheme.secondaryFixed.lighten(0.26),
+                      backgroundColor: context.colorScheme.secondaryFixed
+                          .lighten(0.26),
                       iconText: context.l10n.cycleDay,
-                      title: forecast != null
-                          ? context.l10n.dayN(forecast.dayOfCycle)
-                          : context.l10n.veryShortGenericError,
-                      subtitle: forecast != null
-                          ? context.l10n
-                              .currentlyInThePhasePhase(forecast.phase.name)
-                          : context.l10n.genericError,
+                      title:
+                          forecast != null
+                              ? context.l10n.dayN(forecast.dayOfCycle)
+                              : context.l10n.veryShortGenericError,
+                      subtitle:
+                          forecast != null
+                              ? context.l10n.currentlyInThePhasePhase(
+                                forecast.phase.name,
+                              )
+                              : context.l10n.genericError,
                       icon: Icon(
                         Icons.expand_circle_down_outlined,
                         color: context.colorScheme.secondaryFixed,
@@ -61,51 +64,59 @@ class InfoCards extends StatelessWidget {
                     _buildCard(
                       context,
                       isLoading: state.isLoading,
-                      backgroundColor:
-                          context.colorScheme.primary.lighten(0.25),
+                      backgroundColor: context.colorScheme.primary.lighten(
+                        0.25,
+                      ),
                       iconText: context.l10n.period,
-                      title: forecast != null
-                          ? (forecast.daysUntilNextPeriod == 1
-                              ? context.l10n.inOneDay
-                              : forecast.daysUntilNextPeriod == 0
+                      title:
+                          forecast != null
+                              ? (forecast.daysUntilNextPeriod == 1
+                                  ? context.l10n.inOneDay
+                                  : forecast.daysUntilNextPeriod == 0
                                   ? context.l10n.today
-                                  : context.l10n
-                                      .inNDays(forecast.daysUntilNextPeriod))
-                          : context.l10n.veryShortGenericError,
-                      subtitle: forecast != null
-                          ? (forecast.eventsForDate
-                                  .any((v) => v.type == CycleEventType.period)
-                              ? context.l10n.flowLevel(
-                                  forecast.eventsForDate
-                                          .firstWhere(
-                                            (e) =>
-                                                e.type == CycleEventType.period,
-                                          )
-                                          .additionalData
-                                          ?.toTitleCase() ??
-                                      context.l10n.notSpecified.toTitleCase(),
-                                )
-                              : context.l10n.noPeriodLoggedForThisDay)
-                          : context.l10n.genericError,
+                                  : context.l10n.inNDays(
+                                    forecast.daysUntilNextPeriod,
+                                  ))
+                              : context.l10n.veryShortGenericError,
+                      subtitle:
+                          forecast != null
+                              ? (forecast.eventsForDate.any(
+                                    (v) => v.type == CycleEventType.period,
+                                  )
+                                  ? context.l10n.flowLevel(
+                                    forecast.eventsForDate
+                                            .firstWhere(
+                                              (e) =>
+                                                  e.type ==
+                                                  CycleEventType.period,
+                                            )
+                                            .additionalData
+                                            ?.toTitleCase() ??
+                                        context.l10n.notSpecified.toTitleCase(),
+                                  )
+                                  : context.l10n.noPeriodLoggedForThisDay)
+                              : context.l10n.genericError,
                       icon: Icon(
                         Icons.radio_button_checked,
                         color: context.colorScheme.primary,
                         size: 20,
                       ),
                       onTap: () async {
-                        final shouldRefreshHome = await LogCycleEventBottomSheet
-                            .showCycleEventTypeBottomSheet<bool?>(
-                          context,
-                          step: LogEventStep.periodFlow,
-                          date: state.selectedDate,
-                          cycleEventsForDate:
-                              state.forecast?.eventsForDate ?? [],
-                        );
+                        final shouldRefreshHome =
+                            await LogCycleEventBottomSheet.showCycleEventTypeBottomSheet<
+                              bool?
+                            >(
+                              context,
+                              step: LogEventStep.periodFlow,
+                              date: state.selectedDate,
+                              cycleEventsForDate:
+                                  state.forecast?.eventsForDate ?? [],
+                            );
 
                         if (shouldRefreshHome == true) {
-                          context
-                              .read<HomeCubit>()
-                              .initialize(date: state.selectedDate);
+                          context.read<HomeCubit>().initialize(
+                            date: state.selectedDate,
+                          );
                         }
                       },
                     ),
@@ -116,24 +127,29 @@ class InfoCards extends StatelessWidget {
                     _buildCard(
                       context,
                       isLoading: state.isLoading,
-                      backgroundColor:
-                          context.colorScheme.tertiary.lighten(0.28),
+                      backgroundColor: context.colorScheme.tertiary.lighten(
+                        0.28,
+                      ),
                       iconText: context.l10n.fertileWindow,
-                      title: forecast != null
-                          ? (forecast.phase == MenstruationPhase.ovulation
-                              ? context.l10n.today
-                              : context.l10n
-                                  .inNDays(forecast.daysUntilNextFertileWindow))
-                          : context.l10n.veryShortGenericError,
-                      subtitle: forecast != null
-                          ? context.l10n.chancesOfGettingPregnant(
-                              forecast.eventsForDate.any(
-                                (event) => event.type == CycleEventType.fertile,
+                      title:
+                          forecast != null
+                              ? (forecast.phase == MenstruationPhase.ovulation
+                                  ? context.l10n.today
+                                  : context.l10n.inNDays(
+                                    forecast.daysUntilNextFertileWindow,
+                                  ))
+                              : context.l10n.veryShortGenericError,
+                      subtitle:
+                          forecast != null
+                              ? context.l10n.chancesOfGettingPregnant(
+                                forecast.eventsForDate.any(
+                                      (event) =>
+                                          event.type == CycleEventType.fertile,
+                                    )
+                                    ? context.l10n.high
+                                    : context.l10n.low,
                               )
-                                  ? context.l10n.high
-                                  : context.l10n.low,
-                            )
-                          : context.l10n.genericError,
+                              : context.l10n.genericError,
                       icon: Icon(
                         Icons.adjust,
                         color: context.colorScheme.tertiary,
@@ -144,42 +160,51 @@ class InfoCards extends StatelessWidget {
                     _buildCard(
                       context,
                       isLoading: state.isLoading,
-                      backgroundColor:
-                          context.colorScheme.secondary.lighten(0.15),
+                      backgroundColor: context.colorScheme.secondary.lighten(
+                        0.15,
+                      ),
                       iconText: context.l10n.intimacy,
-                      title: forecast != null
-                          ? forecast.eventsForDate
-                                  .any((v) => v.type == CycleEventType.intimacy)
-                              ? context.l10n.gotFreaky
-                              : context.l10n.noFreaky
-                          : context.l10n.veryShortGenericError,
-                      subtitle: forecast != null
-                          ? forecast.eventsForDate
-                                  .firstWhereOrNull(
-                                    (event) =>
-                                        event.type == CycleEventType.intimacy,
+                      title:
+                          forecast != null
+                              ? forecast.eventsForDate.any(
+                                    (v) => v.type == CycleEventType.intimacy,
                                   )
-                                  ?.additionalData ??
-                              context.l10n.noIntimateActivitiesLoggedForToday
-                          : context.l10n.genericError,
+                                  ? context.l10n.gotFreaky
+                                  : context.l10n.noFreaky
+                              : context.l10n.veryShortGenericError,
+                      subtitle:
+                          forecast != null
+                              ? forecast.eventsForDate
+                                      .firstWhereOrNull(
+                                        (event) =>
+                                            event.type ==
+                                            CycleEventType.intimacy,
+                                      )
+                                      ?.additionalData ??
+                                  context
+                                      .l10n
+                                      .noIntimateActivitiesLoggedForToday
+                              : context.l10n.genericError,
                       icon: Icon(
                         Icons.favorite,
                         color: context.colorScheme.secondary,
                         size: 20,
                       ),
                       onTap: () async {
-                        final shouldRefreshHome = await LogCycleEventBottomSheet
-                            .showCycleEventTypeBottomSheet<bool?>(
-                          context,
-                          step: LogEventStep.intimacy,
-                          date: state.selectedDate,
-                          cycleEventsForDate: forecast?.eventsForDate ?? [],
-                        );
+                        final shouldRefreshHome =
+                            await LogCycleEventBottomSheet.showCycleEventTypeBottomSheet<
+                              bool?
+                            >(
+                              context,
+                              step: LogEventStep.intimacy,
+                              date: state.selectedDate,
+                              cycleEventsForDate: forecast?.eventsForDate ?? [],
+                            );
 
                         if (shouldRefreshHome == true) {
-                          context
-                              .read<HomeCubit>()
-                              .initialize(date: state.selectedDate);
+                          context.read<HomeCubit>().initialize(
+                            date: state.selectedDate,
+                          );
                         }
                       },
                     ),
@@ -242,15 +267,9 @@ class InfoCards extends StatelessWidget {
                       ),
                     ),
                     const Spacer(),
-                    Text(
-                      title,
-                      style: context.primaryTextTheme.titleLarge,
-                    ),
+                    Text(title, style: context.primaryTextTheme.titleLarge),
                     const SizedBox(height: 6),
-                    Text(
-                      subtitle,
-                      style: context.textTheme.bodySmall,
-                    ),
+                    Text(subtitle, style: context.textTheme.bodySmall),
                   ],
                 ),
               ),

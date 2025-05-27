@@ -65,13 +65,14 @@ class _IntimacyStepState extends State<IntimacyStep> {
             ),
             trailing: AnimatedSwitcher(
               duration: const Duration(milliseconds: 200),
-              child: value == _didUseProtection
-                  ? Icon(
-                      Icons.check_rounded,
-                      color: context.colorScheme.primary,
-                      size: 24,
-                    )
-                  : const SizedBox.shrink(),
+              child:
+                  value == _didUseProtection
+                      ? Icon(
+                        Icons.check_rounded,
+                        color: context.colorScheme.primary,
+                        size: 24,
+                      )
+                      : const SizedBox.shrink(),
             ),
             onTap: () => setState(() => _didUseProtection = value),
           ),
@@ -84,9 +85,10 @@ class _IntimacyStepState extends State<IntimacyStep> {
     return AppShadow(
       child: ElevatedButton(
         onPressed: _isSubmitting ? null : () => _onSubmit(),
-        child: _isSubmitting
-            ? AppLoader(color: context.colorScheme.surface, size: 30)
-            : Text(context.l10n.logIntimacy),
+        child:
+            _isSubmitting
+                ? AppLoader(color: context.colorScheme.surface, size: 30)
+                : Text(context.l10n.logIntimacy),
       ),
     );
   }
@@ -120,14 +122,12 @@ class _IntimacyStepState extends State<IntimacyStep> {
     setState(() => _isSubmitting = true);
 
     try {
-      await _cubit.logIntimacy(_didUseProtection).then(
-        (_) {
-          _cubit.clearCache();
-          context
-            ..showSnackbar(context.l10n.cycleEventLoggedSuccessfully)
-            ..popNavigator(true);
-        },
-      );
+      await _cubit.logIntimacy(_didUseProtection).then((_) {
+        _cubit.clearCache();
+        context
+          ..showSnackbar(context.l10n.cycleEventLoggedSuccessfully)
+          ..popNavigator(true);
+      });
     } catch (e) {
       // ignore: use_build_context_synchronously
       context.showErrorSnackbar();

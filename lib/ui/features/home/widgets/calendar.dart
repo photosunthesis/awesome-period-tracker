@@ -75,9 +75,10 @@ class Calendar extends StatelessWidget {
         top: 22,
         child: Icon(
           Icons.favorite,
-          color: useLightColor
-              ? context.colorScheme.primaryContainer
-              : context.colorScheme.error,
+          color:
+              useLightColor
+                  ? context.colorScheme.primaryContainer
+                  : context.colorScheme.error,
           size: 8,
         ),
       );
@@ -104,10 +105,11 @@ class Calendar extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: Border.all(
-          color: isTodayFocused
-              ? event?.type.color.darken(0.1) ??
-                  context.colorScheme.shadow.withAlpha(89)
-              : Colors.transparent,
+          color:
+              isTodayFocused
+                  ? event?.type.color.darken(0.1) ??
+                      context.colorScheme.shadow.withAlpha(89)
+                  : Colors.transparent,
           width: 2.3,
         ),
       ),
@@ -115,7 +117,8 @@ class Calendar extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.all(5),
         decoration: BoxDecoration(
-          color: event?.type.color.withAlpha((event.isPrediction ? 89 : 255)) ??
+          color:
+              event?.type.color.withAlpha((event.isPrediction ? 89 : 255)) ??
               Colors.transparent,
           shape: BoxShape.circle,
         ),
@@ -123,11 +126,12 @@ class Calendar extends StatelessWidget {
         child: Text(
           date.day.toString(),
           style: TextStyle(
-            color: event != null
-                ? event.isPrediction
-                    ? event.type.color.darken(0.4)
-                    : context.colorScheme.surface
-                : null,
+            color:
+                event != null
+                    ? event.isPrediction
+                        ? event.type.color.darken(0.4)
+                        : context.colorScheme.surface
+                    : null,
           ),
         ),
       ),
@@ -187,26 +191,29 @@ class Calendar extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.all(11),
       decoration: BoxDecoration(
-        color: isOutsde
-            ? context.colorScheme.shadow.withAlpha(10)
-            : event.type.color.withAlpha(
-                event.isUncertainPrediction
-                    ? 30
-                    : event.isPrediction
-                        ? 90
-                        : 255,
-              ),
+        color:
+            isOutsde
+                ? context.colorScheme.shadow.withAlpha(10)
+                : event.type.color.withAlpha(
+                  event.isUncertainPrediction
+                      ? 30
+                      : event.isPrediction
+                      ? 90
+                      : 255,
+                ),
         shape: BoxShape.circle,
       ),
       alignment: Alignment.center,
       child: Text(
         date.day.toString(),
         style: TextStyle(
-          color: isOutsde
-              ? context.colorScheme.shadow.withAlpha(120)
-              : event.isPrediction
-                  ? event.type.color
-                      .darken(event.isUncertainPrediction ? 0.5 : 0.4)
+          color:
+              isOutsde
+                  ? context.colorScheme.shadow.withAlpha(120)
+                  : event.isPrediction
+                  ? event.type.color.darken(
+                    event.isUncertainPrediction ? 0.5 : 0.4,
+                  )
                   : context.colorScheme.surface,
         ),
       ),

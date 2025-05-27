@@ -10,49 +10,41 @@ enum MenstruationPhase {
   luteal;
 
   String get title => switch (this) {
-        MenstruationPhase.menstruation => 'On Period',
-        MenstruationPhase.follicular => 'Follicular',
-        MenstruationPhase.ovulation => 'Fertile',
-        MenstruationPhase.luteal => 'Luteal',
-      };
+    MenstruationPhase.menstruation => 'On Period',
+    MenstruationPhase.follicular => 'Follicular',
+    MenstruationPhase.ovulation => 'Fertile',
+    MenstruationPhase.luteal => 'Luteal',
+  };
 
   Color get color => switch (this) {
-        MenstruationPhase.menstruation => AppColors.red,
-        MenstruationPhase.follicular => AppColors.pink,
-        MenstruationPhase.ovulation => AppColors.purple,
-        MenstruationPhase.luteal => AppColors.orange,
-      };
+    MenstruationPhase.menstruation => AppColors.red,
+    MenstruationPhase.follicular => AppColors.pink,
+    MenstruationPhase.ovulation => AppColors.purple,
+    MenstruationPhase.luteal => AppColors.orange,
+  };
 
   Widget get icon => switch (this) {
-        MenstruationPhase.menstruation => Icon(
-            Icons.radio_button_checked,
-            color: color,
-            size: 22,
-          ),
-        MenstruationPhase.follicular => Transform.rotate(
-            angle: pi,
-            child: Icon(
-              Icons.expand_circle_down_outlined,
-              color: color,
-              size: 22,
-            ),
-          ),
-        MenstruationPhase.ovulation => Icon(
-            Icons.adjust,
-            color: color,
-            size: 22,
-          ),
-        MenstruationPhase.luteal => Icon(
-            Icons.expand_circle_down_outlined,
-            color: color,
-            size: 22,
-          ),
-      };
+    MenstruationPhase.menstruation => Icon(
+      Icons.radio_button_checked,
+      color: color,
+      size: 22,
+    ),
+    MenstruationPhase.follicular => Transform.rotate(
+      angle: pi,
+      child: Icon(Icons.expand_circle_down_outlined, color: color, size: 22),
+    ),
+    MenstruationPhase.ovulation => Icon(Icons.adjust, color: color, size: 22),
+    MenstruationPhase.luteal => Icon(
+      Icons.expand_circle_down_outlined,
+      color: color,
+      size: 22,
+    ),
+  };
 
   MenstruationPhase get nextPhase => switch (this) {
-        MenstruationPhase.menstruation => MenstruationPhase.follicular,
-        MenstruationPhase.follicular => MenstruationPhase.ovulation,
-        MenstruationPhase.ovulation => MenstruationPhase.luteal,
-        MenstruationPhase.luteal => MenstruationPhase.menstruation,
-      };
+    MenstruationPhase.menstruation => MenstruationPhase.follicular,
+    MenstruationPhase.follicular => MenstruationPhase.ovulation,
+    MenstruationPhase.ovulation => MenstruationPhase.luteal,
+    MenstruationPhase.luteal => MenstruationPhase.menstruation,
+  };
 }

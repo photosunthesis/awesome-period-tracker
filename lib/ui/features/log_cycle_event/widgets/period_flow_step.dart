@@ -67,19 +67,17 @@ class _PeriodFlowStepState extends State<PeriodFlowStep> {
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 1),
           child: ListTile(
             contentPadding: EdgeInsets.zero,
-            title: Text(
-              flow.title,
-              style: context.primaryTextTheme.titleSmall,
-            ),
+            title: Text(flow.title, style: context.primaryTextTheme.titleSmall),
             trailing: AnimatedSwitcher(
               duration: const Duration(milliseconds: 200),
-              child: _selectedFlow == flow
-                  ? Icon(
-                      Icons.check_rounded,
-                      color: context.colorScheme.primary,
-                      size: 24,
-                    )
-                  : const SizedBox.shrink(),
+              child:
+                  _selectedFlow == flow
+                      ? Icon(
+                        Icons.check_rounded,
+                        color: context.colorScheme.primary,
+                        size: 24,
+                      )
+                      : const SizedBox.shrink(),
             ),
             onTap: () => setState(() => _selectedFlow = flow),
           ),
@@ -98,20 +96,21 @@ class _PeriodFlowStepState extends State<PeriodFlowStep> {
         elevation: 0,
       ),
       onPressed: _isSubmitting ? null : () => _onSubmit(isDeleting: true),
-      child: _isSubmitting
-          ? const AppLoader(size: 30)
-          : Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.delete_rounded,
-                  color: context.colorScheme.error,
-                  size: 20,
-                ),
-                const SizedBox(width: 8),
-                Text(context.l10n.removeLog),
-              ],
-            ),
+      child:
+          _isSubmitting
+              ? const AppLoader(size: 30)
+              : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.delete_rounded,
+                    color: context.colorScheme.error,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(context.l10n.removeLog),
+                ],
+              ),
     );
   }
 
@@ -119,9 +118,10 @@ class _PeriodFlowStepState extends State<PeriodFlowStep> {
     return AppShadow(
       child: ElevatedButton(
         onPressed: _isSubmitting ? null : () => _onSubmit(),
-        child: _isSubmitting
-            ? AppLoader(color: context.colorScheme.surface, size: 30)
-            : Text(context.l10n.logPeriod),
+        child:
+            _isSubmitting
+                ? AppLoader(color: context.colorScheme.surface, size: 30)
+                : Text(context.l10n.logPeriod),
       ),
     );
   }

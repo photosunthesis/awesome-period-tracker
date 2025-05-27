@@ -26,25 +26,17 @@ enum CycleEventType {
   Widget get icon {
     return switch (this) {
       CycleEventType.period => Icon(
-          Icons.radio_button_checked,
-          color: color,
-          size: 24,
-        ),
-      CycleEventType.intimacy => Icon(
-          Icons.favorite,
-          color: color,
-          size: 24,
-        ),
-      CycleEventType.fertile => Icon(
-          Icons.adjust,
-          color: color,
-          size: 24,
-        ),
+        Icons.radio_button_checked,
+        color: color,
+        size: 24,
+      ),
+      CycleEventType.intimacy => Icon(Icons.favorite, color: color, size: 24),
+      CycleEventType.fertile => Icon(Icons.adjust, color: color, size: 24),
       CycleEventType.symptoms => Icon(
-          Icons.emergency_rounded,
-          color: color,
-          size: 24,
-        ),
+        Icons.emergency_rounded,
+        color: color,
+        size: 24,
+      ),
     };
   }
 }

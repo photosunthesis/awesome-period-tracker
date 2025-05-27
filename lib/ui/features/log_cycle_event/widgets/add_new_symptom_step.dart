@@ -71,9 +71,11 @@ class _AddNewSymptomStepState extends State<AddNewSymptomStep> {
         controller: _symptomController,
         autofocus: true,
         decoration: InputDecoration(hintText: context.l10n.symptom),
-        validator: (value) => value == null || value.isEmpty
-            ? context.l10n.fieldCantBeEmpty
-            : null,
+        validator:
+            (value) =>
+                value == null || value.isEmpty
+                    ? context.l10n.fieldCantBeEmpty
+                    : null,
       ),
     );
   }
@@ -82,9 +84,10 @@ class _AddNewSymptomStepState extends State<AddNewSymptomStep> {
     return AppShadow(
       child: ElevatedButton(
         onPressed: _isSubmitting ? null : _onSubmit,
-        child: _isSubmitting
-            ? AppLoader(color: context.colorScheme.surface, size: 30)
-            : Text(context.l10n.addSymptom),
+        child:
+            _isSubmitting
+                ? AppLoader(color: context.colorScheme.surface, size: 30)
+                : Text(context.l10n.addSymptom),
       ),
     );
   }

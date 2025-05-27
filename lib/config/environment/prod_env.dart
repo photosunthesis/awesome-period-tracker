@@ -18,12 +18,4 @@ class ProdEnv implements Env {
   @override
   @EnviedField()
   final String systemId = _ProdEnv.systemId;
-
-  @override
-  @EnviedField()
-  final String cyclePhaseApiKey = _ProdEnv.cyclePhaseApiKey;
-
-  @override
-  @EnviedField()
-  final String cyclePhaseApiUrl = _ProdEnv.cyclePhaseApiUrl;
 }

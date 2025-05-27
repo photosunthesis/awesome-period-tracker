@@ -13,9 +13,9 @@ class LogCycleEventState with LogCycleEventStateMappable {
 
   /// Default state with the step set to [LogEventStep.periodFlow].
   factory LogCycleEventState.initial() => LogCycleEventState(
-        step: LogEventStep.periodFlow,
-        date: DateTime.now().withoutTime(),
-      );
+    step: LogEventStep.periodFlow,
+    date: DateTime.now().withoutTime(),
+  );
 
   final LogEventStep step;
   final DateTime date;

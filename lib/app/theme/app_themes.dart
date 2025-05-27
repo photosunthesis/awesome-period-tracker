@@ -48,8 +48,10 @@ final _darkTheme = ThemeData(
   ),
   iconButtonTheme: _iconButtonTheme(_darkColorScheme),
   textButtonTheme: _textButtonTheme(_darkColorScheme),
-  inputDecorationTheme:
-      _inputDecorationTheme(_darkColorScheme, _textTheme(_darkColorScheme)),
+  inputDecorationTheme: _inputDecorationTheme(
+    _darkColorScheme,
+    _textTheme(_darkColorScheme),
+  ),
 );
 
 final _lightTheme = ThemeData(
@@ -68,8 +70,10 @@ final _lightTheme = ThemeData(
   ),
   iconButtonTheme: _iconButtonTheme(_lightColorScheme),
   textButtonTheme: _textButtonTheme(_lightColorScheme),
-  inputDecorationTheme:
-      _inputDecorationTheme(_lightColorScheme, _textTheme(_darkColorScheme)),
+  inputDecorationTheme: _inputDecorationTheme(
+    _lightColorScheme,
+    _textTheme(_darkColorScheme),
+  ),
 );
 
 TextTheme _textTheme(ColorScheme colorScheme) =>
@@ -142,32 +146,31 @@ AppBarTheme _appBarTheme(ColorScheme colorScheme, TextTheme primaryTextTheme) =>
 ElevatedButtonThemeData _elevatedButtonTheme(
   ColorScheme colorScheme,
   TextTheme primaryTextTheme,
-) =>
-    ElevatedButtonThemeData(
-      style: ButtonStyle(
-        backgroundColor: WidgetStateProperty.resolveWith((states) {
-          if (states.contains(WidgetState.disabled)) {
-            return colorScheme.tertiary.withAlpha(200);
-          }
-          return colorScheme.tertiary;
-        }),
-        foregroundColor: WidgetStateProperty.resolveWith((states) {
-          if (states.contains(WidgetState.disabled)) {
-            return colorScheme.onSurface.withAlpha(31);
-          }
-          return colorScheme.onPrimary;
-        }),
-        elevation: WidgetStateProperty.all(0),
-        padding: WidgetStateProperty.all(
-          const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-        ),
-        shape: WidgetStateProperty.all(
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        ),
-        textStyle: WidgetStateProperty.all(primaryTextTheme.labelLarge),
-        minimumSize: WidgetStateProperty.all(const Size(double.infinity, 48)),
-      ),
-    );
+) => ElevatedButtonThemeData(
+  style: ButtonStyle(
+    backgroundColor: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.disabled)) {
+        return colorScheme.tertiary.withAlpha(200);
+      }
+      return colorScheme.tertiary;
+    }),
+    foregroundColor: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.disabled)) {
+        return colorScheme.onSurface.withAlpha(31);
+      }
+      return colorScheme.onPrimary;
+    }),
+    elevation: WidgetStateProperty.all(0),
+    padding: WidgetStateProperty.all(
+      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+    ),
+    shape: WidgetStateProperty.all(
+      RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    ),
+    textStyle: WidgetStateProperty.all(primaryTextTheme.labelLarge),
+    minimumSize: WidgetStateProperty.all(const Size(double.infinity, 48)),
+  ),
+);
 
 IconButtonThemeData _iconButtonTheme(ColorScheme colorScheme) =>
     IconButtonThemeData(
@@ -179,63 +182,51 @@ IconButtonThemeData _iconButtonTheme(ColorScheme colorScheme) =>
       ),
     );
 
-TextButtonThemeData _textButtonTheme(ColorScheme colorScheme) =>
-    TextButtonThemeData(
-      style: ButtonStyle(
-        foregroundColor: WidgetStateProperty.resolveWith((states) {
-          if (states.contains(WidgetState.disabled)) {
-            return colorScheme.tertiary.withAlpha(31);
-          }
-          return colorScheme.tertiary;
-        }),
-        overlayColor: WidgetStateProperty.all(
-          colorScheme.primary.withAlpha(31),
-        ),
-        padding: WidgetStateProperty.all(
-          const EdgeInsets.symmetric(horizontal: 8),
-        ),
-      ),
-    );
+TextButtonThemeData _textButtonTheme(
+  ColorScheme colorScheme,
+) => TextButtonThemeData(
+  style: ButtonStyle(
+    foregroundColor: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.disabled)) {
+        return colorScheme.tertiary.withAlpha(31);
+      }
+      return colorScheme.tertiary;
+    }),
+    overlayColor: WidgetStateProperty.all(colorScheme.primary.withAlpha(31)),
+    padding: WidgetStateProperty.all(const EdgeInsets.symmetric(horizontal: 8)),
+  ),
+);
 
 InputDecorationTheme _inputDecorationTheme(
   ColorScheme colorScheme,
   TextTheme textTheme,
-) =>
-    InputDecorationTheme(
-      filled: true,
-      fillColor: colorScheme.onPrimary,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide.none,
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide.none,
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide.none,
-      ),
-      errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(
-          color: colorScheme.error,
-          width: 2,
-        ),
-      ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(
-          color: colorScheme.error,
-          width: 2,
-        ),
-      ),
-      hintStyle: textTheme.bodyLarge?.copyWith(
-        color: colorScheme.onSurface.withAlpha(100),
-      ),
-      errorStyle: textTheme.bodySmall?.copyWith(
-        color: colorScheme.error,
-      ),
-      suffixIconColor: colorScheme.onSurface.withAlpha(100),
-    );
+) => InputDecorationTheme(
+  filled: true,
+  fillColor: colorScheme.onPrimary,
+  contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+  border: OutlineInputBorder(
+    borderRadius: BorderRadius.circular(8),
+    borderSide: BorderSide.none,
+  ),
+  enabledBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.circular(8),
+    borderSide: BorderSide.none,
+  ),
+  focusedBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.circular(8),
+    borderSide: BorderSide.none,
+  ),
+  errorBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.circular(8),
+    borderSide: BorderSide(color: colorScheme.error, width: 2),
+  ),
+  focusedErrorBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.circular(8),
+    borderSide: BorderSide(color: colorScheme.error, width: 2),
+  ),
+  hintStyle: textTheme.bodyLarge?.copyWith(
+    color: colorScheme.onSurface.withAlpha(100),
+  ),
+  errorStyle: textTheme.bodySmall?.copyWith(color: colorScheme.error),
+  suffixIconColor: colorScheme.onSurface.withAlpha(100),
+);

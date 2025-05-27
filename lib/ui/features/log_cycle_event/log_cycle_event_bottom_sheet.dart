@@ -36,17 +36,18 @@ class LogCycleEventBottomSheet extends StatefulWidget {
       scrollControlDisabledMaxHeightRatio: 0.9,
       isScrollControlled: true,
       barrierColor: context.colorScheme.shadow.withAlpha(140),
-      builder: (context) => Padding(
-        padding: MediaQuery.of(context).viewInsets,
-        child: BlocProvider(
-          create: (_) => GetIt.I<LogCycleEventCubit>(),
-          child: LogCycleEventBottomSheet._(
-            date: date,
-            step: step,
-            cycleEventsForDate: cycleEventsForDate,
+      builder:
+          (context) => Padding(
+            padding: MediaQuery.of(context).viewInsets,
+            child: BlocProvider(
+              create: (_) => GetIt.I<LogCycleEventCubit>(),
+              child: LogCycleEventBottomSheet._(
+                date: date,
+                step: step,
+                cycleEventsForDate: cycleEventsForDate,
+              ),
+            ),
           ),
-        ),
-      ),
     );
   }
 
@@ -73,7 +74,7 @@ class _LogCycleEventBottomSheetState extends State<LogCycleEventBottomSheet> {
       builder: (context, state) {
         final height =
             MediaQuery.of(context).size.height * state.step.heightFactor +
-                (kIsWeb ? _webPadding : 0);
+            (kIsWeb ? _webPadding : 0);
 
         return AnimatedContainer(
           duration: const Duration(milliseconds: 200),
@@ -124,20 +125,20 @@ class _LogCycleEventBottomSheetState extends State<LogCycleEventBottomSheet> {
         },
         child: switch (step) {
           LogEventStep.periodFlow => PeriodFlowStep(
-              periodEvent: widget.cycleEventsForDate.firstWhereOrNull(
-                (e) => e.type == CycleEventType.period && !e.isPrediction,
-              ),
+            periodEvent: widget.cycleEventsForDate.firstWhereOrNull(
+              (e) => e.type == CycleEventType.period && !e.isPrediction,
             ),
+          ),
           LogEventStep.symptoms => SymptomsStep(
-              symptomEvent: widget.cycleEventsForDate.firstWhereOrNull(
-                (e) => e.type == CycleEventType.symptoms,
-              ),
+            symptomEvent: widget.cycleEventsForDate.firstWhereOrNull(
+              (e) => e.type == CycleEventType.symptoms,
             ),
+          ),
           LogEventStep.intimacy => IntimacyStep(
-              intimacyEvent: widget.cycleEventsForDate.firstWhereOrNull(
-                (e) => e.type == CycleEventType.intimacy && !e.isPrediction,
-              ),
+            intimacyEvent: widget.cycleEventsForDate.firstWhereOrNull(
+              (e) => e.type == CycleEventType.intimacy && !e.isPrediction,
             ),
+          ),
           LogEventStep.addNewSymptom => const AddNewSymptomStep(),
         },
       ),

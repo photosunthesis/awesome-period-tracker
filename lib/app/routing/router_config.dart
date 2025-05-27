@@ -33,20 +33,18 @@ abstract class RouterConfig {
         return null;
       },
       routes: [
-        GoRoute(
-          path: Routes.root,
-          redirect: (context, state) => Routes.home,
-        ),
+        GoRoute(path: Routes.root, redirect: (context, state) => Routes.home),
         GoRoute(
           path: Routes.pinLogin,
           builder: (context, state) => const PinLoginScreen(),
         ),
         GoRoute(
           path: Routes.home,
-          builder: (context, state) => BlocProvider(
-            create: (_) => GetIt.I<HomeCubit>(),
-            child: const HomeScreen(),
-          ),
+          builder:
+              (context, state) => BlocProvider(
+                create: (_) => GetIt.I<HomeCubit>(),
+                child: const HomeScreen(),
+              ),
         ),
       ],
     );

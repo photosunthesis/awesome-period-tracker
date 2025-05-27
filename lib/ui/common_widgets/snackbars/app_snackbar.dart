@@ -14,15 +14,17 @@ abstract class AppSnackbar {
       Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: type == AppSnackbarType.success
-              ? context.colorScheme.tertiary
-              : context.colorScheme.error,
+          color:
+              type == AppSnackbarType.success
+                  ? context.colorScheme.tertiary
+                  : context.colorScheme.error,
           borderRadius: BorderRadius.circular(8),
         ),
         child: Text(
           message,
-          style: context.primaryTextTheme.bodyMedium
-              ?.copyWith(color: context.colorScheme.surfaceContainer),
+          style: context.primaryTextTheme.bodyMedium?.copyWith(
+            color: context.colorScheme.surfaceContainer,
+          ),
         ),
       ),
       context: context,

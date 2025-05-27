@@ -5,28 +5,23 @@ import 'package:injectable/injectable.dart';
 @injectable
 class GeminiClient {
   GeminiClient(Env env)
-      : _model = GenerativeModel(
-          model: _modelIdentifier,
-          apiKey: env.geminiApiKey,
-          safetySettings: [
-            SafetySetting(
-              HarmCategory.sexuallyExplicit,
-              HarmBlockThreshold.none,
-            ),
-          ],
-        );
+    : _model = GenerativeModel(
+        model: _modelIdentifier,
+        apiKey: env.geminiApiKey,
+        safetySettings: [
+          SafetySetting(HarmCategory.sexuallyExplicit, HarmBlockThreshold.none),
+        ],
+      );
 
   final GenerativeModel _model;
 
-  static const _modelIdentifier = 'gemini-2.0-flash-lite-preview-02-05';
+  static const _modelIdentifier = 'gemini-2.5-flash-preview-04-17';
 
   /// Generates AI content from a text prompt.
   ///
   /// Returns the generated text, or an empty string if generation fails.
   /// Safety settings are configured to allow all content types.
-  Future<String> generateContentFromText({
-    required String prompt,
-  }) async {
+  Future<String> generateContentFromText({required String prompt}) async {
     final response = await _model.generateContent([Content.text(prompt)]);
     return response.text ?? '';
   }

@@ -14,14 +14,4 @@ abstract interface class Env {
 
   /// Unique system identifier.
   abstract final String systemId;
-
-  /// API key for Womens Health services.
-  ///
-  /// More info: https://rapidapi.com/datafenix-datafenix-default/api/womens-health-menstrual-cycle-phase-predictions-insights
-  abstract final String cyclePhaseApiKey;
-
-  /// API URL for Womens Health services.
-  ///
-  /// More info: https://rapidapi.com/datafenix-datafenix-default/api/womens-health-menstrual-cycle-phase-predictions-insights
-  abstract final String cyclePhaseApiUrl;
 }

@@ -23,7 +23,8 @@ class AppCard extends StatelessWidget {
       color: backgroundColor ?? context.colorScheme.surface,
       borderRadius: BorderRadius.circular(22),
       border: border,
-      boxShadow: boxShadow ??
+      boxShadow:
+          boxShadow ??
           [
             BoxShadow(
               color: context.colorScheme.shadow.withAlpha(13),
@@ -42,9 +43,6 @@ class AppCard extends StatelessWidget {
       );
     }
 
-    return DecoratedBox(
-      decoration: decoration,
-      child: child,
-    );
+    return DecoratedBox(decoration: decoration, child: child);
   }
 }

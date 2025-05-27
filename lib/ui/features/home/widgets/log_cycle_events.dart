@@ -18,9 +18,7 @@ class LogCycleEventTypes extends StatelessWidget {
       spacing: 12,
       runSpacing: 4,
       children: [
-        for (final type in _types) ...[
-          _buildButton(context, type),
-        ],
+        for (final type in _types) ...[_buildButton(context, type)],
       ],
     );
   }

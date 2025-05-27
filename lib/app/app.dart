@@ -25,10 +25,11 @@ class App extends StatelessWidget {
             themeMode: state,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
-            builder: (context, child) => KeyboardDismissOnTap(
-              dismissOnCapturedTaps: true,
-              child: child!,
-            ),
+            builder:
+                (context, child) => KeyboardDismissOnTap(
+                  dismissOnCapturedTaps: true,
+                  child: child!,
+                ),
           );
         },
       ),

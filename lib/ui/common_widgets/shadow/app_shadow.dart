@@ -2,11 +2,7 @@ import 'package:awesome_period_tracker/utils/extensions/build_context_extensions
 import 'package:flutter/material.dart';
 
 class AppShadow extends StatelessWidget {
-  const AppShadow({
-    required this.child,
-    this.shadowColor,
-    super.key,
-  });
+  const AppShadow({required this.child, this.shadowColor, super.key});
 
   final Widget child;
   final Color? shadowColor;

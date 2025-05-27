@@ -10,10 +10,7 @@ import 'package:table_calendar/table_calendar.dart';
 
 @injectable
 class AiInsightsService {
-  const AiInsightsService(
-    this._localStorage,
-    this._geminiClient,
-  );
+  const AiInsightsService(this._localStorage, this._geminiClient);
 
   final SharedPreferencesAsync _localStorage;
   final GeminiClient _geminiClient;
@@ -30,11 +27,14 @@ class AiInsightsService {
 
     try {
       if (await _localStorage.containsKey(prefsKey) && useCache) {
-        final cachedInsight =
-            InsightMapper.fromJson((await _localStorage.getString(prefsKey))!);
+        final cachedInsight = InsightMapper.fromJson(
+          (await _localStorage.getString(prefsKey))!,
+        );
 
-        final isCacheValid =
-            isSameDay(cachedInsight.date, forecast.date.toUtc());
+        final isCacheValid = isSameDay(
+          cachedInsight.date,
+          forecast.date.toUtc(),
+        );
 
         if (isCacheValid) return cachedInsight;
       }
@@ -88,40 +88,46 @@ class AiInsightsService {
     switch (phase) {
       case MenstruationPhase.follicular:
         phaseInfo = 'follicular phase';
-        additionalInfo = isPast
-            ? 'Mention energy levels and mood changes experienced. Add an encouraging note about the body\'s natural renewal.'
-            : 'Share tips for harnessing increased energy. Add a light-hearted comment about feeling refreshed.';
+        additionalInfo =
+            isPast
+                ? 'Mention energy levels and mood changes experienced. Add an encouraging note about the body\'s natural renewal.'
+                : 'Share tips for harnessing increased energy. Add a light-hearted comment about feeling refreshed.';
         break;
       case MenstruationPhase.ovulation:
         phaseInfo = 'ovulation phase';
-        additionalInfo = isPast
-            ? 'Discuss peak fertility signs experienced. Include a playful note about heightened confidence or charm.'
-            : 'Highlight fertility window and energy peaks. Add a fun comment about feeling extra magnetic/freaky today.';
+        additionalInfo =
+            isPast
+                ? 'Discuss peak fertility signs experienced. Include a playful note about heightened confidence or charm.'
+                : 'Highlight fertility window and energy peaks. Add a fun comment about feeling extra magnetic/freaky today.';
         break;
       case MenstruationPhase.luteal:
         phaseInfo = 'luteal phase';
         if (dayOfCycle > averageCycleLength) {
-          additionalInfo = isPast
-              ? 'Describe late period symptoms experienced. Add a gentle reminder about cycle variations being normal.'
-              : 'Address common late period concerns. Include a light joke about being fashionably late.';
+          additionalInfo =
+              isPast
+                  ? 'Describe late period symptoms experienced. Add a gentle reminder about cycle variations being normal.'
+                  : 'Address common late period concerns. Include a light joke about being fashionably late.';
         } else {
-          additionalInfo = isPast
-              ? 'Reflect on premenstrual changes experienced. Share a relatable observation about this phase.'
-              : 'Prepare for upcoming premenstrual changes. Add a gentle reminder about self-care with a touch of humor.';
+          additionalInfo =
+              isPast
+                  ? 'Reflect on premenstrual changes experienced. Share a relatable observation about this phase.'
+                  : 'Prepare for upcoming premenstrual changes. Add a gentle reminder about self-care with a touch of humor.';
         }
         break;
       case MenstruationPhase.menstruation:
         phaseInfo = 'menstruation phase';
-        additionalInfo = isPast
-            ? 'Acknowledge period experiences. Share a supportive note with a touch of period humor.'
-            : 'Suggest comfort measures and self-care tips. Add an empathetic joke about period challenges.';
+        additionalInfo =
+            isPast
+                ? 'Acknowledge period experiences. Share a supportive note with a touch of period humor.'
+                : 'Suggest comfort measures and self-care tips. Add an empathetic joke about period challenges.';
         break;
     }
 
     final timeContext = isPast ? 'past' : 'upcoming';
-    final summaryOrAdvice = isPast
-        ? 'Share insights about what likely happened'
-        : 'Provide friendly advice and useful tips';
+    final summaryOrAdvice =
+        isPast
+            ? 'Share insights about what likely happened'
+            : 'Provide friendly advice and useful tips';
 
     return '''
 You are a compassionate medical expert providing personalized menstrual cycle insights.

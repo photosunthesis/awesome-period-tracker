@@ -56,9 +56,14 @@ class _SymptomsStepState extends State<SymptomsStep> {
       builder: (context, state) {
         return AnimatedSwitcher(
           duration: const Duration(milliseconds: 250),
-          child: state.isLoadingSymptoms
-              ? const Center(child: AppLoader())
-              : _buildChips(context, state.symptoms, state.selectedSymptoms),
+          child:
+              state.isLoadingSymptoms
+                  ? const Center(child: AppLoader())
+                  : _buildChips(
+                    context,
+                    state.symptoms,
+                    state.selectedSymptoms,
+                  ),
         );
       },
     );
@@ -114,11 +119,7 @@ class _SymptomsStepState extends State<SymptomsStep> {
     );
   }
 
-  Widget _buildChip(
-    String symptom,
-    bool isSelected,
-    VoidCallback onTap,
-  ) {
+  Widget _buildChip(String symptom, bool isSelected, VoidCallback onTap) {
     return InkWell(
       onTap: onTap,
       child: AppShadow(
@@ -128,9 +129,10 @@ class _SymptomsStepState extends State<SymptomsStep> {
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(14),
-            color: isSelected
-                ? context.colorScheme.secondary
-                : context.colorScheme.onTertiary,
+            color:
+                isSelected
+                    ? context.colorScheme.secondary
+                    : context.colorScheme.onTertiary,
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -154,9 +156,10 @@ class _SymptomsStepState extends State<SymptomsStep> {
               Text(
                 symptom.toTitleCase(),
                 style: TextStyle(
-                  color: isSelected
-                      ? context.colorScheme.onTertiary
-                      : context.colorScheme.onSurface,
+                  color:
+                      isSelected
+                          ? context.colorScheme.onTertiary
+                          : context.colorScheme.onSurface,
                 ),
               ),
             ],
@@ -171,12 +174,14 @@ class _SymptomsStepState extends State<SymptomsStep> {
       child: BlocBuilder<LogCycleEventCubit, LogCycleEventState>(
         builder: (context, state) {
           return ElevatedButton(
-            onPressed: _isSubmitting && state.selectedSymptoms.isEmpty
-                ? null
-                : () async => _onSubmit(state.selectedSymptoms),
-            child: _isSubmitting
-                ? AppLoader(color: context.colorScheme.surface, size: 30)
-                : Text(context.l10n.logSymptoms),
+            onPressed:
+                _isSubmitting && state.selectedSymptoms.isEmpty
+                    ? null
+                    : () async => _onSubmit(state.selectedSymptoms),
+            child:
+                _isSubmitting
+                    ? AppLoader(color: context.colorScheme.surface, size: 30)
+                    : Text(context.l10n.logSymptoms),
           );
         },
       ),

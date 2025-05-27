@@ -23,10 +23,11 @@ class Forecast {
   final List<CycleEvent> events;
   final List<CycleEvent> eventsForDate;
 
-  DateTime get nextFertileWindowStartDate => events
-      .where((e) => e.date.isAfter(date))
-      .firstWhere((e) => e.type == CycleEventType.fertile)
-      .date;
+  DateTime get nextFertileWindowStartDate =>
+      events
+          .where((e) => e.date.isAfter(date))
+          .firstWhere((e) => e.type == CycleEventType.fertile)
+          .date;
 
   int get daysUntilNextFertileWindow =>
       nextFertileWindowStartDate.difference(date).inDays;

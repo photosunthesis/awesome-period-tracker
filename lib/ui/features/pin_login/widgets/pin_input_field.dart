@@ -16,13 +16,13 @@ class PinInputField extends StatelessWidget {
   final void Function(String) onCompleted;
 
   PinTheme _defaultPinTheme(BuildContext context) => PinTheme(
-        padding: const EdgeInsets.all(14),
-        textStyle: context.primaryTextTheme.titleLarge,
-        decoration: BoxDecoration(
-          color: context.colorScheme.onPrimary,
-          borderRadius: BorderRadius.circular(8),
-        ),
-      );
+    padding: const EdgeInsets.all(14),
+    textStyle: context.primaryTextTheme.titleLarge,
+    decoration: BoxDecoration(
+      color: context.colorScheme.onPrimary,
+      borderRadius: BorderRadius.circular(8),
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
