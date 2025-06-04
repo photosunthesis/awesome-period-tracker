@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.11.0] - 2025-05-15
+
+### Changed
+
+- Upgraded to Flutter 3.32.1! 🎉
+
 ## [1.10.3] - 2025-03-10
 
 ### Changed
