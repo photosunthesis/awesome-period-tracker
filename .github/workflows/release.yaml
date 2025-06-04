@@ -179,12 +179,16 @@ jobs:
           tag: ${{ github.ref_name }}
           name: ${{ github.ref_name }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          artifacts: ${{ 
-            (github.event.inputs.build_android == 'true' || github.event_name != 'workflow_dispatch') && 
-            (github.event.inputs.build_ios == 'true' || github.event_name != 'workflow_dispatch') ? 'android-artifacts/*.apk,ios-artifacts/app.ipa' : 
-            (github.event.inputs.build_android == 'true' || github.event_name != 'workflow_dispatch') ? 'android-artifacts/*.apk' : 
-            (github.event.inputs.build_ios == 'true' || github.event_name != 'workflow_dispatch') ? 'ios-artifacts/app.ipa' : '' 
-          }}
+          artifacts: |
+            ${{ if and(or(github.event.inputs.build_android == 'true', github.event_name != 'workflow_dispatch'), or(github.event.inputs.build_ios == 'true', github.event_name != 'workflow_dispatch')) }}
+            android-artifacts/*.apk,ios-artifacts/app.ipa
+            ${{ else if or(github.event.inputs.build_android == 'true', github.event_name != 'workflow_dispatch') }}
+            android-artifacts/*.apk
+            ${{ else if or(github.event.inputs.build_ios == 'true', github.event_name != 'workflow_dispatch') }}
+            ios-artifacts/app.ipa
+            ${{ else }}
+
+            ${{ end }}
           body: |
             ### Live URL: https://period-tracker.sun-envidiado.com
 
