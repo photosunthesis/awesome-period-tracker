@@ -172,6 +172,23 @@ jobs:
           echo "$CHANGELOG_CONTENT" >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
 
+      - name: Determine artifacts to upload
+        id: set_artifacts
+        shell: bash
+        run: |
+          ARTIFACTS=""
+          if [[ "${{ github.event.inputs.build_android }}" == "true" || "${{ github.event_name }}" != "workflow_dispatch" ]]; then
+            ARTIFACTS+="android-artifacts/*.apk"
+          fi
+          if [[ "${{ github.event.inputs.build_ios }}" == "true" || "${{ github.event_name }}" != "workflow_dispatch" ]]; then
+            if [[ -n "$ARTIFACTS" ]]; then
+              ARTIFACTS+=",ios-artifacts/app.ipa"
+            else
+              ARTIFACTS+="ios-artifacts/app.ipa"
+            fi
+          fi
+          echo "artifacts=$ARTIFACTS" >> $GITHUB_OUTPUT
+
       - name: Create Release
         uses: ncipollo/release-action@v1.14.0
         with:
@@ -179,16 +196,7 @@ jobs:
           tag: ${{ github.ref_name }}
           name: ${{ github.ref_name }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          artifacts: |
-            ${{ if and(or(github.event.inputs.build_android == 'true', github.event_name != 'workflow_dispatch'), or(github.event.inputs.build_ios == 'true', github.event_name != 'workflow_dispatch')) }}
-            android-artifacts/*.apk,ios-artifacts/app.ipa
-            ${{ else if or(github.event.inputs.build_android == 'true', github.event_name != 'workflow_dispatch') }}
-            android-artifacts/*.apk
-            ${{ else if or(github.event.inputs.build_ios == 'true', github.event_name != 'workflow_dispatch') }}
-            ios-artifacts/app.ipa
-            ${{ else }}
-
-            ${{ end }}
+          artifacts: ${{ steps.set_artifacts.outputs.artifacts }}
           body: |
             ### Live URL: https://period-tracker.sun-envidiado.com
 
