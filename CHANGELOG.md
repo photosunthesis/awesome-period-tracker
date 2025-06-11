@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.11.1] - 2025-06-11
+
+### Changed
+
+- Upgraded to Flutter 3.32.2! 🎉
+
+### Fixed
+
+- Fixed issue with predictions by removing the API altogether. Now using Google Gemini for cycle predictions and insights.
+
 ## [1.11.0] - 2025-05-15
 
 ### Changed

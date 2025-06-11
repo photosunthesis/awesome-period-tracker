@@ -1,7 +1,7 @@
 name: awesome_period_tracker
 description: "An awesome period tracker app, because your cycle deserves a standing ovulation"
 publish_to: "none"
-version: 1.11.0
+version: 1.11.1
 
 environment:
   sdk: ">=3.7.2 <4.0.0"
