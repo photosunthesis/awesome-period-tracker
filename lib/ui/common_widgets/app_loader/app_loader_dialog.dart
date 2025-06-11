@@ -3,7 +3,7 @@ import 'package:awesome_period_tracker/utils/extensions/build_context_extensions
 import 'package:flutter/material.dart';
 
 abstract class AppLoaderDialog {
-  static show(
+  static void show(
     BuildContext context, {
     bool barrierDismissible = false,
   }) {
@@ -15,5 +15,5 @@ abstract class AppLoaderDialog {
     );
   }
 
-  static hide(BuildContext context) => context.popNavigator();
+  static void hide(BuildContext context) => context.popNavigator();
 }

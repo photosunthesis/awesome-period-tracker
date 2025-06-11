@@ -82,7 +82,7 @@ class _AppLoaderState extends State<AppLoader>
     final double size = widget.size;
     return AnimatedBuilder(
       animation: _controller,
-      builder: (_, __) => SizedBox(
+      builder: (_, _) => SizedBox(
         width: size,
         height: size,
         child: Stack(

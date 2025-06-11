@@ -6,6 +6,7 @@ import 'package:awesome_period_tracker/domain/models/forecast.dart';
 import 'package:awesome_period_tracker/domain/models/insight.dart';
 import 'package:awesome_period_tracker/utils/extensions/date_time_extensions.dart';
 import 'package:dart_mappable/dart_mappable.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
@@ -19,17 +20,16 @@ class HomeCubit extends Cubit<HomeState> {
     this._forecastService,
     this._insightsService,
     this._symptomsRepository,
+    this._crashlytics,
   ) : super(HomeState.initial());
 
   final CycleEventsRepository _cycleEventsRepository;
   final ForecastService _forecastService;
   final AiInsightsService _insightsService;
   final SymptomsRepository _symptomsRepository;
+  final FirebaseCrashlytics _crashlytics;
 
-  Future<void> initialize({
-    DateTime? date,
-    bool useCache = true,
-  }) async {
+  Future<void> initialize({DateTime? date, bool useCache = true}) async {
     try {
       date ??= DateTime.now().withoutTime();
 
@@ -39,8 +39,10 @@ class HomeCubit extends Cubit<HomeState> {
 
       final symptoms = await _symptomsRepository.get();
 
-      final forecast =
-          await _forecastService.createForecastForDateFromEvents(date, events);
+      final forecast = await _forecastService.createForecastForDateFromEvents(
+        date,
+        events,
+      );
 
       final insight = await _insightsService.getInsightForForecast(
         forecast,
@@ -55,7 +57,8 @@ class HomeCubit extends Cubit<HomeState> {
           symptoms: symptoms,
         ),
       );
-    } on Exception catch (error) {
+    } on Exception catch (error, stackTrace) {
+      _crashlytics.recordError(error, stackTrace);
       emit(state.copyWith(error: error));
     } finally {
       emit(state.copyWith(isLoading: false));

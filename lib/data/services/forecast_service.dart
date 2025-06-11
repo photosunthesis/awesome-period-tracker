@@ -1,5 +1,5 @@
 import 'package:awesome_period_tracker/config/environment/env.dart';
-import 'package:awesome_period_tracker/data/repositories/cycle_data_repository.dart';
+import 'package:awesome_period_tracker/data/repositories/cycle_prediction_repository.dart';
 import 'package:awesome_period_tracker/domain/models/cycle_event.dart';
 import 'package:awesome_period_tracker/domain/models/cycle_event_type.dart';
 import 'package:awesome_period_tracker/domain/models/forecast.dart';
@@ -10,10 +10,10 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class ForecastService {
-  const ForecastService(this._env, this._cycleDataRepository);
+  const ForecastService(this._env, this._cyclePredictionRepository);
 
   final Env _env;
-  final CycleDataRepository _cycleDataRepository;
+  final CyclePredictionRepository _cyclePredictionRepository;
 
   static const _defaultPeriodDaysLength = 5;
   static const _defaultCycleDaysLength = 28;
@@ -25,7 +25,9 @@ class ForecastService {
     events.sort((a, b) => a.date.compareTo(b.date));
 
     final endDate = selectedDate.add(const Duration(days: 365));
-    final apiPrediction = await _cycleDataRepository.fetchPrediction(events);
+    final apiPrediction = await _cyclePredictionRepository.fetchPrediction(
+      events,
+    );
 
     final predictions = _generatePredictions(
       selectedDate,
@@ -52,8 +54,9 @@ class ForecastService {
       selectedDate,
     );
 
-    final eventToday =
-        mergedEvents.firstWhereOrNull((e) => e.date.isSameDay(selectedDate));
+    final eventToday = mergedEvents.firstWhereOrNull(
+      (e) => e.date.isSameDay(selectedDate),
+    );
 
     final dayOfCycle = _getDayOfCurrentCycle(mergedEvents, selectedDate);
 
@@ -92,12 +95,14 @@ class ForecastService {
   int _getDayOfCurrentCycle(List<CycleEvent> events, DateTime selectedDate) {
     if (events.isEmpty) return 1;
 
-    final recentPeriods = events
-        .where(
-          (e) =>
-              e.type == CycleEventType.period && !e.date.isAfter(selectedDate),
-        )
-        .toList();
+    final recentPeriods =
+        events
+            .where(
+              (e) =>
+                  e.type == CycleEventType.period &&
+                  !e.date.isAfter(selectedDate),
+            )
+            .toList();
 
     if (recentPeriods.isEmpty) return 1;
 
@@ -129,7 +134,8 @@ class ForecastService {
     final predictions = <CycleEvent>[];
 
     // Find the last actual period
-    final lastActualPeriod = events
+    final lastActualPeriod =
+        events
             .where((e) => e.type == CycleEventType.period && !e.isPrediction)
             .map((e) => e.date)
             .lastOrNull ??
@@ -174,8 +180,9 @@ class ForecastService {
       final ovulationDate = nextPeriodStart.subtract(const Duration(days: 14));
 
       // Fertile window is 5 days before and day of ovulation
-      final fertileWindowStart =
-          ovulationDate.subtract(const Duration(days: 5));
+      final fertileWindowStart = ovulationDate.subtract(
+        const Duration(days: 5),
+      );
       final fertileWindowEnd = ovulationDate;
 
       // Generate fertile window events
@@ -199,14 +206,16 @@ class ForecastService {
 
   List<DateTime> _findPeriodStartDates(List<CycleEvent> events) {
     // Sort and deduplicate event dates
-    final mergedEvents = events
-        .where(
-          (e) => e.type == CycleEventType.period && !e.isUncertainPrediction,
-        )
-        .map((e) => e.date.withoutTime())
-        .toSet()
-        .toList()
-      ..sort((a, b) => a.compareTo(b));
+    final mergedEvents =
+        events
+            .where(
+              (e) =>
+                  e.type == CycleEventType.period && !e.isUncertainPrediction,
+            )
+            .map((e) => e.date.withoutTime())
+            .toSet()
+            .toList()
+          ..sort((a, b) => a.compareTo(b));
 
     final periodStartDates = <DateTime>[];
 
@@ -225,9 +234,11 @@ class ForecastService {
         // Validate if this is truly a new cycle
         bool isNewCycle = true;
 
-        for (int prevEventIndex = eventIndex - 1;
-            prevEventIndex >= 0;
-            prevEventIndex--) {
+        for (
+          int prevEventIndex = eventIndex - 1;
+          prevEventIndex >= 0;
+          prevEventIndex--
+        ) {
           final previousDate = mergedEvents[prevEventIndex];
           final daysFromPrevious = currentDate.difference(previousDate).inDays;
 
@@ -265,9 +276,10 @@ class ForecastService {
     final daysToShift = selectedDate.difference(firstMissedPrediction).inDays;
     return predictedCycleStarts
         .map(
-          (date) => date.isAfter(lastActualPeriod)
-              ? date.add(Duration(days: daysToShift))
-              : date,
+          (date) =>
+              date.isAfter(lastActualPeriod)
+                  ? date.add(Duration(days: daysToShift))
+                  : date,
         )
         .toList();
   }
@@ -283,9 +295,10 @@ class ForecastService {
     for (final predictedStart in adjustedPredictedStarts) {
       if (predictedStart.isAfter(lastActualPeriod) &&
           predictedStart.isBefore(endDate)) {
-        final previousPredictedStart = adjustedPredictedStarts
-            .where((date) => date.isBefore(predictedStart))
-            .lastOrNull;
+        final previousPredictedStart =
+            adjustedPredictedStarts
+                .where((date) => date.isBefore(predictedStart))
+                .lastOrNull;
 
         predictions.addAll(
           _generatePeriodEvents(

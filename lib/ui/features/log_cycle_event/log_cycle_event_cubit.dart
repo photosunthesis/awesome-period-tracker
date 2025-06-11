@@ -10,6 +10,7 @@ import 'package:awesome_period_tracker/utils/extensions/date_time_extensions.dar
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:dart_mappable/dart_mappable.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -23,11 +24,13 @@ class LogCycleEventCubit extends Cubit<LogCycleEventState> {
     this._cycleEventsRepository,
     this._authRepository,
     this._symptomsRepository,
+    this._crashlytics,
   ) : super(LogCycleEventState.initial());
 
   final CycleEventsRepository _cycleEventsRepository;
   final AuthRepository _authRepository;
   final SymptomsRepository _symptomsRepository;
+  final FirebaseCrashlytics _crashlytics;
 
   void setStep(LogEventStep step) {
     emit(state.copyWith(step: step));
@@ -41,8 +44,9 @@ class LogCycleEventCubit extends Cubit<LogCycleEventState> {
     try {
       emit(state.copyWith(isLoadingSymptoms: true));
       await _symptomsRepository.create(symptom);
-    } catch (e) {
-      // TODO Handle error
+    } catch (error, stackTrace) {
+      // TODO Handle errors more gracefully
+      _crashlytics.recordError(error, stackTrace);
     } finally {
       emit(state.copyWith(isLoadingSymptoms: false));
     }
@@ -59,8 +63,9 @@ class LogCycleEventCubit extends Cubit<LogCycleEventState> {
               state.selectedSymptoms.where((s) => s != symptom).toList(),
         ),
       );
-    } catch (e) {
-      // TODO Handle error
+    } catch (error, stackTrace) {
+      // TODO Handle errors more gracefully
+      _crashlytics.recordError(error, stackTrace);
     } finally {
       emit(state.copyWith(isLoadingSymptoms: false));
     }
@@ -75,18 +80,17 @@ class LogCycleEventCubit extends Cubit<LogCycleEventState> {
     try {
       emit(state.copyWith(isLoadingSymptoms: true));
 
-      final selectedSymptoms =
-          joinedSelectedSymptoms.split(Strings.symptomSeparator);
+      final selectedSymptoms = joinedSelectedSymptoms.split(
+        Strings.symptomSeparator,
+      );
       final symptoms = await _symptomsRepository.get();
 
       emit(
-        state.copyWith(
-          selectedSymptoms: selectedSymptoms,
-          symptoms: symptoms,
-        ),
+        state.copyWith(selectedSymptoms: selectedSymptoms, symptoms: symptoms),
       );
-    } catch (e) {
-      // TODO Handle error
+    } catch (error, stackTrace) {
+      // TODO Handle errors more gracefully
+      _crashlytics.recordError(error, stackTrace);
     } finally {
       emit(state.copyWith(isLoadingSymptoms: false));
     }
@@ -95,9 +99,10 @@ class LogCycleEventCubit extends Cubit<LogCycleEventState> {
   void toggleSymptom(String symptom) {
     emit(
       state.copyWith(
-        selectedSymptoms: state.selectedSymptoms.contains(symptom)
-            ? state.selectedSymptoms.where((s) => s != symptom).toList()
-            : [...state.selectedSymptoms, symptom],
+        selectedSymptoms:
+            state.selectedSymptoms.contains(symptom)
+                ? state.selectedSymptoms.where((s) => s != symptom).toList()
+                : [...state.selectedSymptoms, symptom],
       ),
     );
   }
@@ -112,8 +117,9 @@ class LogCycleEventCubit extends Cubit<LogCycleEventState> {
       currentDate,
     );
 
-    final existingPeriodEvents =
-        existingEvents.where((e) => e.type == CycleEventType.period);
+    final existingPeriodEvents = existingEvents.where(
+      (e) => e.type == CycleEventType.period,
+    );
 
     if (existingPeriodEvents.isNotEmpty) {
       return _createOrUpdateEventByType(CycleEventType.period, flow.name);
@@ -139,10 +145,12 @@ class LogCycleEventCubit extends Cubit<LogCycleEventState> {
       symptoms = symptoms.where((s) => s.isNotEmpty).toList();
 
       if (symptoms.isEmpty) {
-        final symptomsEvent = await _cycleEventsRepository.get({
-          'date': Timestamp.fromDate(state.date.withoutTime()),
-          'type': CycleEventType.symptoms.name,
-        }).then((value) => value.firstOrNull);
+        final symptomsEvent = await _cycleEventsRepository
+            .get({
+              'date': Timestamp.fromDate(state.date.withoutTime()),
+              'type': CycleEventType.symptoms.name,
+            })
+            .then((value) => value.firstOrNull);
 
         if (symptomsEvent != null) {
           await _cycleEventsRepository.delete(symptomsEvent);
@@ -155,8 +163,9 @@ class LogCycleEventCubit extends Cubit<LogCycleEventState> {
         CycleEventType.symptoms,
         symptoms.join(Strings.symptomSeparator),
       );
-    } catch (e) {
-      // TODO Handle error
+    } catch (error, stackTrace) {
+      // TODO Handle errors more gracefully
+      _crashlytics.recordError(error, stackTrace);
     } finally {
       emit(state.copyWith(isLoading: false));
     }
@@ -170,8 +179,9 @@ class LogCycleEventCubit extends Cubit<LogCycleEventState> {
         CycleEventType.intimacy,
         didUseProtection ? Strings.usedProtection : Strings.didNotUseProtection,
       );
-    } catch (e) {
-      // TODO Handle error
+    } catch (error, stackTrace) {
+      // TODO Handle errors more gracefully
+      _crashlytics.recordError(error, stackTrace);
     } finally {
       emit(state.copyWith(isLoading: false));
     }
@@ -181,8 +191,9 @@ class LogCycleEventCubit extends Cubit<LogCycleEventState> {
     try {
       emit(state.copyWith(isLoading: true));
       await _cycleEventsRepository.delete(event);
-    } catch (e) {
-      // TODO Handle error
+    } catch (error, stackTrace) {
+      // TODO Handle errors more gracefully
+      _crashlytics.recordError(error, stackTrace);
     } finally {
       emit(state.copyWith(isLoading: false));
     }
@@ -211,13 +222,16 @@ class LogCycleEventCubit extends Cubit<LogCycleEventState> {
   ]) async {
     late CycleEvent? cycleEvent;
 
-    cycleEvent = await _cycleEventsRepository.get({
-      'createdBy': _authRepository.getCurrentUser()!.uid,
-      'date': Timestamp.fromDate(date ?? state.date.withoutTime()),
-      'type': type.name,
-    }).then(
-      (value) => value.firstWhereOrNull((e) => isSameDay(e.date, state.date)),
-    );
+    cycleEvent = await _cycleEventsRepository
+        .get({
+          'createdBy': _authRepository.getCurrentUser()!.uid,
+          'date': Timestamp.fromDate(date ?? state.date.withoutTime()),
+          'type': type.name,
+        })
+        .then(
+          (value) =>
+              value.firstWhereOrNull((e) => isSameDay(e.date, state.date)),
+        );
 
     if (cycleEvent != null) {
       cycleEvent = cycleEvent.copyWith(additionalData: additionalData);

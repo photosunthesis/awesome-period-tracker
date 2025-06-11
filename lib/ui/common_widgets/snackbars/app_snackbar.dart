@@ -5,7 +5,7 @@ import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 enum AppSnackbarType { success, error }
 
 abstract class AppSnackbar {
-  static show(
+  static void show(
     BuildContext context, {
     required String message,
     AppSnackbarType type = AppSnackbarType.success,
