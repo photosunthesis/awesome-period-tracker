@@ -19,7 +19,7 @@ jobs:
 
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: 3.32.1 # Must be the same with the one in pubspec.yaml
+          flutter-version: 3.32.2 # Must be the same with the one in pubspec.yaml
 
       - name: Configure environment
         run: |
